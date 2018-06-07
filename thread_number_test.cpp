@@ -29,7 +29,6 @@ class AnswerPool{
     	for(int i=0;i < psize ;i++){
     		//product_pool[i] == 0 case will be count in thread
 			product *= product_pool[i];
-			//printf("i = %d sum = %d\n",i,product );
     	}
        return product;
     }
@@ -56,16 +55,12 @@ static long int diff_in_us(struct timespec t1, struct timespec t2)
 
 void multiFor(int* A,int *B,int N,int ID,AnswerPool *mypool){
 	mypool->product_pool[ID]=1;
-		//printf("product = %d\n", mypool->product_pool[ID]);
-		//printf("zero_count = %d\n", mypool->zero_count);
 	for(int i=0;i<N;i++){
 		//zero_count+= !A[i];
 		if(A[i])
 			mypool->product_pool[ID] *= A[i];
 		else
 			mypool ->zero_countAdd();
-		//printf("id %d product = %d\n",ID, mypool->product_pool[ID]);
-		//printf("Id %d zero_count = %d\n",ID, mypool->zero_count);
 	}
 }
 
@@ -76,11 +71,7 @@ void testf(int A,int B){
 
 void F(int* A,int* B,int N,int thread_Count){
 	int temp = 0;
-	/*for(int i = 0;i<N;i++){
-		printf("A[i] = %d B[i] = %d\n", A[i],B[i]);
-	}
-	puts("Print end");
-	getchar();*/
+
 	AnswerPool *mypool = new AnswerPool(thread_Count);
 	std::thread mThread[thread_Count];
 
@@ -109,11 +100,7 @@ void F(int* A,int* B,int N,int thread_Count){
 	default:
 		break;
 	}
-	/*for(int i = 0;i<N;i++){
-		printf("A[i] = %d B[i] = %d\n", A[i],B[i]);
-	}
-	puts("Print end");
-	getchar();*/
+
 	delete(mypool);
 	return ;
 }
@@ -125,7 +112,6 @@ int main( int argc, char** argv )
 {
 	FILE *fp = fopen("time2.txt","w");
 	unsigned int n = std::thread::hardware_concurrency();
-	//printf("max thread %u\n",n );
 	struct timespec start, end;
 	for(int counter = 0;counter < 7;counter++){
 #if defined(__GNUC__)
